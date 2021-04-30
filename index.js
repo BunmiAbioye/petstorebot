@@ -11,7 +11,7 @@ server.listen(port, function () {
   console.log("Server listening at port %d", port);
 });
 
-const LockDownEssentials = require("./LockDownEssentials");
+const Popup = require("./Popup");
 const e = require('express');
 const { exception } = require('console');
 
@@ -22,6 +22,11 @@ app.use(express.static("www"));
 
 let oSockets = {};
 let oOrders = {};
+
+app.post("/payment", (req, res) => {
+  res.end("Thank-you for your payment");
+});
+
 app.post("/payment/:phone", (req, res) => {
   // this happens when the order is complete
   sFrom = req.params.phone;
@@ -60,7 +65,7 @@ app.post("/sms", (req, res) => {
   let sFrom = req.body.From || req.body.from;
   let sUrl = `${req.headers['x-forwarded-proto'] || req.protocol}://${req.headers['x-forwarded-host'] || req.headers.host}${req.baseUrl}`;
   if (!oOrders.hasOwnProperty(sFrom)) {
-    oOrders[sFrom] = new LockDownEssentials(sFrom, sUrl);
+    oOrders[sFrom] = new Popup(sFrom, sUrl);
   }
   if (oOrders[sFrom].isDone()) {
     delete oOrders[sFrom];
