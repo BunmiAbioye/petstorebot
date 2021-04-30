@@ -98,7 +98,7 @@ module.exports = class ChickenTotalCost extends Order{
     }
     renderForm(){
       //  client id is kept private
-      const sClientID = process.env.SB_CLIENT_ID || 'SB_CLIENT_ID=AaW95bIGsKjXZwdczupZRmwQxyKhnIZFek7XTTjUhnA_hUV7wgz2tBC0V8m8XZiXXvgsKfDR9p4xVpea npm start'
+      const sClientID = process.env.SB_CLIENT_ID || 'put your client id here for testing ... Make sure that you delete it before committing'
       return(`
       <!DOCTYPE html>
   
