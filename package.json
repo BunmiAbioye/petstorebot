@@ -27,7 +27,9 @@
   "dependencies": {
     "engine.io": "*",
     "express": "*",
+    "multer": "^1.4.2",
     "socket.io": "*",
+    "sync-fetch": "^0.3.0",
     "twilio": "*",
     "underscore": "*"
   },

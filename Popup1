@@ -1,7 +1,5 @@
 // Bunmi Abioye
 const Order = require("./Order");
-const fetch = require('sync-fetch');
-
 
 const OrderState = Object.freeze({
     WELCOMING:   Symbol("welcoming"),
@@ -11,9 +9,9 @@ const OrderState = Object.freeze({
     PAYMENT: Symbol("payment")
 });
 // Constants - costs
-const A = 10;
-const B = 10;
-const C = 10;
+const YES = 7;
+const NO = 0;
+const LARGE = 15;
 const BOTTLEWATER = 1;
 const DELIVERY_TIME = 40;
 // Tax rate
@@ -32,8 +30,6 @@ module.exports = class ChickenTotalCost extends Order{
         this.totalCost = 0;
         this.tCost = 0;
         this.tax = 0;
-        global.dishes = [];
-        global.dishObjects = [];
     }
     handleInput(sInput){
         let aReturn = [];
@@ -42,56 +38,31 @@ module.exports = class ChickenTotalCost extends Order{
                 this.stateCur = OrderState.SIZE;
                 // First response                
                 aReturn.push("Welcome to Bunmi's Popup Restaurant!");
-                aReturn.push("Which of the dishes do you want from below menu list? Enter A, B or C");
-                aReturn.push("A for the first menu, B for the second menu and C for the third menu");
-
-                const oJson = fetch("https://prog8110a-default-rtdb.firebaseio.com/meals.json").json();
-                console.log(oJson);
-                Object.keys(oJson).map((key) => {
-                    const oEntity = oJson[key];
-                    global.dishObjects.push({
-                      key:   oEntity.title.toLowerCase(),
-                      value: oEntity
-                  });
-                    global.dishes.push(oEntity.title.toLowerCase());
-                    oEntity.id = key;
-                    aReturn.push("Dish: " + oEntity.title + "\n" +
-                                "Description: " + oEntity.full_description + "\n" +
-                                "Pickup Location: " + oEntity.location +"\n" +
-                                "Date and Time: " + oEntity.date_of_event +"\n");
-    
-                });
-                console.log("Dict Values - "+ JSON.stringify(global.dishObjects));
-                console.log("Dishes-", JSON.stringify(global.dishes));
+                aReturn.push("Do you want our delicious fried rice? Please enter YES OR NO");
                 break;
                 // Second response with validation
             case OrderState.SIZE:
-              if(sInput.toLowerCase() == "a"){
-                this.cCost = A
+              if(sInput.toLowerCase() == "yes"){
+                this.cCost = YES
                 this.stateCur = OrderState.SIDES
-                aReturn.push("Do you want it delivered? Please enter YES or NO");                   
+                aReturn.push("Which sauced protein would you want with it? Please enter CHICKEN or LAMB");                   
             }
-            else if(sInput.toLowerCase() == "b"){
-                this.cCost = B
+            else if(sInput.toLowerCase() == "no"){
+                this.cCost = NO
                 this.stateCur = OrderState.SIDES
-                aReturn.push("Do you want it delivered? Please enter YES or NO");
+                aReturn.push("Which sauced protein would you want with it? Please enter CHICKEN or LAMB");
             }
-            else if(sInput.toLowerCase() == "c"){
-                this.cCost = C
-                this.stateCur = OrderState.SIDES
-                aReturn.push("Do you want it delivered? Please enter YES or NO");
-            }
-            else aReturn.push("Please enter the correct answer (A, B Or C)");
+            
+            else aReturn.push("Please enter the correct answer (YES OR NO)");
             this.sSize = sInput;
             break;
-            
         // Third response with validation
             case OrderState.SIDES:
-                if(sInput.toLowerCase() == "yes" || sInput.toLowerCase() == "no"){
+                if(sInput.toLowerCase() == "chicken" || sInput.toLowerCase() == "lamb"){
                     this.stateCur = OrderState.DRINKS
                     aReturn.push("How many bottles of water would you want with your order?");
                 }
-                else aReturn.push("Do you want it delivered? Please enter YES or NO");
+                else aReturn.push("Please enter the correct sauced protein - CHICKEN or LAMB");
                 this.sSides = sInput;
                 break;
             case OrderState.DRINKS:
@@ -120,7 +91,7 @@ module.exports = class ChickenTotalCost extends Order{
                 this.isDone(true);
                 let d = new Date(); 
                   d.setMinutes(d.getMinutes() + DELIVERY_TIME);
-                aReturn.push(`Thank you, Your order will be delivered at: ${Object.values(sInput.purchase_units[0].shipping.address)}`);
+                aReturn.push(`Your order will be delivered at: ${Object.values(sInput.purchase_units[0].shipping.address)}, by ${d.toTimeString()}`);
                 break;
         }
         return aReturn;
