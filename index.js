@@ -25,11 +25,10 @@ let oOrders = {};
 
 app.post("/payment", (req, res) => {
   //res.end("Thank-you for your order");
-  const sFrom = req.params.title;
-  if (!oOrders.hasOwnProperty(sFrom)) {
+  if (!oOrders.hasOwnProperty()) {
     res.end("order already complete");
   } else {
-    res.end(oOrders[sFrom].renderForm());
+    res.end(renderForm());
   }
 });
 
