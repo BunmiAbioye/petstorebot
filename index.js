@@ -33,9 +33,7 @@ app.post("/payment", upload.none(), (req, res) => {
   console.log("FomData" + req.form);
   let sFrom = req.body.phone;
   console.log("Form body " + JSON.stringify(sFrom));
-  let sUrl = "http://localhost:3002/payment"
-  console.log("URL - " + sUrl)
-  oOrders[sFrom] = new RestaurantOrder(sFrom, sUrl);
+  oOrders[sFrom] = new RestaurantOrder(sFrom);
   oOrders[sFrom].totalprice = 10;
   res.end( oOrders[sFrom].renderForm());
 });
