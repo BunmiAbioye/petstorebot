@@ -25,7 +25,7 @@ let oOrders = {};
 
 app.post("/payment", (req, res) => {
   //res.end("Thank-you for your order");
-  const sFrom = req.params.phone;
+  const sFrom = req.params.watcher;
   if (!oOrders.hasOwnProperty(sFrom)) {
     res.end("order already complete");
   } else {
