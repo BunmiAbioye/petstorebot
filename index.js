@@ -4,6 +4,8 @@ const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 const _ = require('underscore');
+const multer = require('multer');
+const upload = multer();
 
 const port = process.env.PORT || parseInt(process.argv.pop()) || 3002;
 
@@ -33,7 +35,9 @@ app.post("/payment", upload.none(), (req, res) => {
   console.log("FomData" + req.form);
   let sFrom = req.body.phone;
   console.log("Form body " + JSON.stringify(sFrom));
-  oOrders[sFrom] = new RestaurantOrder(sFrom);
+  let sUrl = "http://localhost:3002/payment"
+  console.log("URL - " + sUrl)
+  oOrders[sFrom] = new RestaurantOrder(sFrom, sUrl);
   oOrders[sFrom].totalprice = 10;
   res.end( oOrders[sFrom].renderForm());
 });
