@@ -139,7 +139,7 @@ module.exports = class ChickenTotalCost extends Order{
       <body>
         <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
         <script
-          src="https://www.paypal.com/sdk/js?client-id=${sClientID}"> // Required. Replace SB_CLIENT_ID with your sandbox client ID.
+          src="https://www.paypal.com/sdk/js?client-id=AaW95bIGsKjXZwdczupZRmwQxyKhnIZFek7XTTjUhnA_hUV7wgz2tBC0V8m8XZiXXvgsKfDR9p4xVpea"> // Required. Replace SB_CLIENT_ID with your sandbox client ID.
         </script>
         Thank you ${this.sNumber} for your order of $${this.totalCost}.
         <div id="paypal-button-container"></div>
