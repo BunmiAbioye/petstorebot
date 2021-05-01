@@ -24,7 +24,13 @@ let oSockets = {};
 let oOrders = {};
 
 app.post("/payment", (req, res) => {
-  res.end("Thank-you for your payment");
+  //res.end("Thank-you for your order");
+  const sFrom = req.params.phone;
+  if (!oOrders.hasOwnProperty(sFrom)) {
+    res.end("order already complete");
+  } else {
+    res.end(oOrders[sFrom].renderForm());
+  }
 });
 
 app.post("/payment/:phone", (req, res) => {
